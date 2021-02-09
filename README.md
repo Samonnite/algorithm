@@ -19,3 +19,7 @@
 4. JavaScript
 * 防抖、节流
 * call、apply、bind
+* 深克隆
+* 函数柯里化
+* instanceof
+* promise

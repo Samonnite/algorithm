@@ -39,7 +39,7 @@ class MyPromise {
     }
 
     // then方法
-    then (onFulfilled, onRejected) {
+    then(onFulfilled, onRejected) {
         // 先判断参数的数据类型,如果不是，需要创建函数将值传递
         onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : value => value
         onRejected = typeof onRejected === 'function' ? onRejected : reason => { throw reason }
@@ -59,7 +59,7 @@ class MyPromise {
         }
     }
 
-    catch (onRejected) {
+    catch(onRejected) {
         return this.then(undefined, onRejected)
     }
 
@@ -71,7 +71,7 @@ class MyPromise {
      * return new MyPromise.resolve(callback().then(() => value) / () => {throw reason})
      * @param {*} callback 
      */
-    finally (callback) {
+    finally(callback) {
         return this.then(value => {
             // Promise.resolve会等callback()的函数执行完再返回结果
             return new MyPromise.resolve(callback().then(() => value))
@@ -97,25 +97,22 @@ class MyPromise {
         // 执行索引
         let index = 0;
         return new MyPromise((resolve, reject) => {
-            // 定义方法，先将结果放入result
-            function addData (key, value) {
-                result[key] = value;
-                index++;
-                // 当执行结束时输出结果
-                if (index === arr.length) {
-                    resolve(result);
-                }
-            }
-            // 遍历promise数组
             for (let i = 0; i < arr.length; i++) {
-                let cur = arr[i];
-                if (cur instanceof MyPromise) {
-                    cur.then(value => addData(i, value), reason => reject(reason))
-                } else {
-                    addData(i, cur)
-                }
+                arr[i].then(data => {
+                    result[i] = data
+                    if(++index === arr.length) {
+                        resolve(result)
+                    }
+                }, reject)
             }
-            return resolve(result)
+        })
+    }
+
+    static race = function (arr) {
+        return new Promise(() => {
+            for (let i = 0; i < arr.length; i++) {
+                arr[i].then(resolve, reject)
+            }
         })
     }
 }

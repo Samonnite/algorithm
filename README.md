@@ -23,3 +23,7 @@
 * 函数柯里化
 * instanceof
 * promise
+* 数组降维
+* new
+* EventEmitter
+* sleep

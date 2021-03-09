@@ -28,14 +28,15 @@ const inorderTraversal = function (root) {
 const inorderTraversal = function (root) {
   let stack = [], arr = []
   if (root == null) return arr
-  while(stack.length || root) {
-    while(root) {
-      stack.push(root)
-      root = root.left
+  let cur = root
+  while(stack.length || cur) {
+    while(cur) {
+      stack.push(cur)
+      cur = cur.left
     }
-    let cur = stack.pop()
+    cur = stack.pop()
     arr.push(cur.val)
-    root = root.right
+    cur = cur.right
   }
   return arr
 }

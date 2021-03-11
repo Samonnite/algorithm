@@ -98,7 +98,7 @@ class MyPromise {
         let index = 0;
         return new MyPromise((resolve, reject) => {
             for (let i = 0; i < arr.length; i++) {
-                arr[i].then(data => {
+                Promise.resolve(arr[i]).then(data => {
                     result[i] = data
                     if(++index === arr.length) {
                         resolve(result)

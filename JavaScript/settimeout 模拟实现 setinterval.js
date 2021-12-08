@@ -1,11 +1,17 @@
-function mySetTimeout(fn, t) {
-    let timer = null;
-    function interval() {
-        fn();
-        timer = setTimeout(interval, t);
+function mySetInterval(fn, time = 1000) {
+  let timer = null,
+    isClear = false;
+  function interval() {
+    if (isClear) {
+      isClear = false;
+      clearTimeout(timer);
+      return;
     }
-    interval();
-    mySetTimeout.cancel = () => {
-        clearTimeout(timer);
-    };
+    fn();
+    timer = setTimeout(interval, time);
+  }
+  timer = setTimeout(interval, time);
+  return () => {
+    isClear = true;
+  };
 }

@@ -1,25 +1,45 @@
 class Scheduler {
-    constructor() {
-        this.count = 2
-        this.queue = []
-        this.run = []
+    constructor(limit) {
+      this.queue = [];
+      this.maxCount = limit;
+      this.runCounts = 0;
     }
-
-    addTask(task) {
-        this, queue.push(task)
-        return this.schedule()
+    add(time, order) {
+      const promiseCreator = () => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            console.log(order);
+            resolve();
+          }, time);
+        });
+      };
+      this.queue.push(promiseCreator);
     }
-
-    schedule() {
-        if (this.run.length < this.queue.length && this.queue.length) {
-            const task = this.queue.shift()
-            const promise = task().then(() => {
-                this.run.splice(this.run.indexOf(promise), 1)
-            })
-            this.run.push(promise)
-            return promise
-        } else {
-            return promise.race(this.run).then(() => this.schedule())
-        }
+    taskStart() {
+      for (let i = 0; i < this.maxCount; i++) {
+        this.request();
+      }
     }
-}
+    request() {
+      if (!this.queue || !this.queue.length || this.runCounts >= this.maxCount) {
+        return;
+      }
+      this.runCounts++;
+      this.queue
+        .shift()()
+        .then(() => {
+          this.runCounts--;
+          this.request();
+        });
+    }
+  }
+  const scheduler = new Scheduler(2);
+  const addTask = (time, order) => {
+    scheduler.add(time, order);
+  };
+  addTask(1000, "1");
+  addTask(500, "2");
+  addTask(300, "3");
+  addTask(400, "4");
+  scheduler.taskStart();
+  

@@ -98,14 +98,33 @@ class MyPromise {
         let index = 0;
         return new MyPromise((resolve, reject) => {
             for (let i = 0; i < arr.length; i++) {
-                arr[i].then(data => {
+                MyPromise.resolve(arr[i]).then(data => {
                     result[i] = data
-                    if(++index === arr.length) {
+                    if (++index === arr.length) {
                         resolve(result)
                     }
                 }, reject)
             }
         })
+    }
+
+    static allSettled = function (arr) {
+        return new MyPromise(resolve => {
+            const data = [], len = arr.length;
+            let count = len;
+            for (let i = 0; i < len; i += 1) {
+                const promise = MyPromise.resolve(arr[i]);
+                promise.then(res => {
+                    data[i] = { status: 'fulfilled', value: res };
+                }, error => {
+                    data[i] = { status: 'rejected', reason: error };
+                }).finally(() => {
+                    if (!--count) {
+                        resolve(data);
+                    }
+                });
+            }
+        });
     }
 
     static race = function (arr) {

@@ -1,4 +1,4 @@
-function deepClone(target, map = new Map()) {
+function deepClone(target, map = new WeakMap()) {
 
   if (typeof target === 'object' && target) {
 

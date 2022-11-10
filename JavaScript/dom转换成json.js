@@ -1,7 +1,8 @@
 function dom2Json(domtree) {
-  let obj = {};
-  obj.name = domtree.tagName;
-  obj.children = [];
-  domtree.childNodes.forEach((child) => obj.children.push(dom2Json(child)));
-  return obj;
+  let result = {
+    name: domtree.tagName,
+    children: [],
+  }
+  domtree.childNodes.forEach((child) => result.children.push(dom2Json(child)));
+  return result;
 }

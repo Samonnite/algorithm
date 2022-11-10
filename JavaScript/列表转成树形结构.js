@@ -1,18 +1,21 @@
+function createNode(id, data) {
+  // 获取childData
+  const childData = data.filter(({ parentId }) => parentId === id);
+
+  const node = {
+    id,
+    children: childData.reduce((pre, cur) => {
+      pre.push(createNode(cur.id, data));
+      return pre;
+    })
+  }
+
+  return node;
+}
+
 function listToTree(data) {
-  let temp = {};
-  let treeData = [];
-  for (let i = 0; i < data.length; i++) {
-    temp[data[i].id] = data[i];
-  }
-  for (let i in temp) {
-    if (+temp[i].parentId != 0) {
-      if (!temp[temp[i].parentId].children) {
-        temp[temp[i].parentId].children = [];
-      }
-      temp[temp[i].parentId].children.push(temp[i]);
-    } else {
-      treeData.push(temp[i]);
-    }
-  }
-  return treeData;
+  // 获取根节点id
+  const { id } = data.find(item => !item.parentId)
+
+  return createNode(id, data)
 }

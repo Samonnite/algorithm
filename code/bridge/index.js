@@ -21,7 +21,25 @@ const JSBridge = {
      * @param fnName
      * @param fn
      */
-    registerFn(fnName, fn) { },
+    registerFn(fnName, fn) {
+        if (typeof fnName !== 'string') {
+            throw TypeError('Illegal fnName: Not an string')
+        }
+        if (typeof fn !== 'function') {
+            throw TypeError('ol. fn: Not an function')
+        }
+
+        window[fnName] = function (data) {
+            if (isIOS) {
+                fn(data)
+            }
+            if (isAndroid) {
+                // 安卓环境需要做转换
+                data = data || '{}'
+                fn(JSON.parse(data))
+            }
+        }
+    },
 
     /**
      * 注销 H5 供 app 调用的方法

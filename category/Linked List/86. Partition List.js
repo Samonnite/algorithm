@@ -40,3 +40,27 @@ var partition = function (head, x) {
     }
     return dmy.next;
 };
+
+var partitionRe = function (head, x) {
+    let left = new ListNode(null, head);
+    let right = new ListNode(null, head);
+    let tempLeft = left;
+    let tempRight = right;
+    let p = head;
+
+    while(p) {
+        if (p.val < x) {
+            left.next = p;
+            left = left.next;
+        } else {
+            right.next = p;
+            right = right.next;
+        }
+        p = p.next;
+    }
+
+    right.next = null;
+    left.next = tempRight.next
+
+    return tempLeft.next;
+}

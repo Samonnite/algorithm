@@ -45,7 +45,13 @@ const JSBridge = {
      * 注销 H5 供 app 调用的方法
      * @param fnName
      */
-    unregisterFn(fnName) { },
+    unregisterFn(fnName) {
+        if (typeof fnName !== 'string') {
+            throw TypeError('Illegal fnName: Not an string')
+        }
+
+        delete window[fnName]
+    },
 
     /**
      * 跳转至app模块

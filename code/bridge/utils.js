@@ -1,15 +1,3 @@
-export const isIOS = () => {
-    return [
-        'iPad Simulator',
-        'iPhone Simulator',
-        'iPod Simulator',
-        'iPad',
-        'iPhone',
-        'iPod'
-      ].includes(navigator.platform)
-      // iPad on iOS 13 detection
-      || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
-};
-
-export const isAndroid = () => {};
-export const isApp = () => {};
+2023-01-03T11:32:00+08:00
+随机数:16507
+提交次数:1
